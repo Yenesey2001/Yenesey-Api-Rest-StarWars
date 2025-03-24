@@ -155,7 +155,7 @@ def get_vehicle(vehicle_id):  # Nombre de la función corregido
         return jsonify({"msg": "Vehicle not found"}), 404
 
     response_body = {
-        "Planet": vehicle.serialize_vehicle()  # Solo serializamos un objeto
+        "Vehicle": vehicle.serialize_vehicle()  # Solo serializamos un objeto
     }
 
     return jsonify(response_body), 200
@@ -266,30 +266,49 @@ def get_user_favourites(user_id):
 
     if not favourites:
         return jsonify({
-            "planet_ids": [],
-            "character_ids": [],
-            "vehicle_ids": []
+            "planets": [],
+            "characters": [],
+            "vehicles": []
         }), 200
 
-    planet_ids = []
-    character_ids = []
-    vehicle_ids = []
+    planets = []
+    characters = []
+    vehicles = []
 
     for favourite in favourites:
         if favourite.planet_id:
-            planet_ids.append(favourite.planet_id)
+            planet = Planet.query.get(favourite.planet_id)
+            if planet:
+                planets.append({
+                    "id": planet.id,
+                    "population": planet.population,
+                    "climate": planet.climate
+                })
         if favourite.character_id:
-            character_ids.append(favourite.character_id)
+            character = Character.query.get(favourite.character_id)
+            if character:
+                characters.append({
+                    "id": character.id,
+                    "gender": character.gender,
+                    "height": character.height
+                })
         if favourite.vehicle_id:
-            vehicle_ids.append(favourite.vehicle_id)
+            vehicle = Vehicle.query.get(favourite.vehicle_id)
+            if vehicle:
+                vehicles.append({
+                    "id": vehicle.id,
+                    "model": vehicle.model,
+                    "manufacturer": vehicle.manufacturer
+                })
 
     response_body = {
-        "planet_ids": planet_ids,
-        "character_ids": character_ids,
-        "vehicle_ids": vehicle_ids
+        "planets": planets,
+        "characters": characters,
+        "vehicles": vehicles
     }
 
     return jsonify(response_body), 200
+
 
 # ................................. FAVOURITES ( DELETE PLANET, VEHICLES, CHARACTERS ) ........................................
 

@@ -36,6 +36,7 @@ class Character(db.Model):
     __tablename__ = "characters"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), unique=True)
     gender: Mapped[str] = mapped_column(String(10), nullable=False)
     height: Mapped[int] = mapped_column(Integer)
     mass: Mapped[int] = mapped_column(Integer)
@@ -54,6 +55,7 @@ class Character(db.Model):
     def serialize(self):
         return ({
             "id": self.id,
+            "name": self.name,
             "gender": self.gender,
             "height": self.height,
             "mass": self.mass,
@@ -69,6 +71,7 @@ class Planet(db.Model):
     __tablename__ = "planets"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), unique=True)
     population: Mapped[int] = mapped_column(Integer)
     climate: Mapped[str] = mapped_column(String(20), nullable=False)
     terrain: Mapped[str] = mapped_column(String(20), nullable=False)
@@ -79,6 +82,7 @@ class Planet(db.Model):
     def serialize_planet(self):
         return ({
             "id": self.id,
+            "name": self.name,
             "population": self.population,
             "climate": self.climate,
             "terrain": self.terrain,
@@ -91,6 +95,7 @@ class Vehicle(db.Model):
     __tablename__ = "vehicles"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), unique=True)
     model: Mapped[str] = mapped_column(
         String(100), unique=True, nullable=False)  # Aumentado
     manufacturer: Mapped[str] = mapped_column(
@@ -112,6 +117,7 @@ class Vehicle(db.Model):
     def serialize_vehicle(self):
         return ({
             "id": self.id,
+            "name": self.name,
             "model": self.model,
             "manufacturer": self.manufacturer,
             "vehicle_class": self.vehicle_class,
